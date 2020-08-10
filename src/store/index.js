@@ -7,7 +7,19 @@ export default new Vuex.Store({
   state: {
     messages: []
   },
-  mutations: {},
+  mutations: {
+    ADD_NEW_MESSAGE_FROM_SOCKET(state, newMessageReceived) {
+      state.messages.push(newMessageReceived);
+    },
+  },
+  getters: {
+    MESSAGES: state => {
+      return state.messages;
+    },
+    LATEST_MESSAGE: state => {
+      return state.messages[state.messages.length - 1];
+    },
+  },
   actions: {
     stopListening() {
       this.connection.close();
@@ -26,7 +38,8 @@ export default new Vuex.Store({
       };
 
       this.connection.onmessage = e => {
-        this.messages.push(e.data);
+        this.commit("ADD_NEW_MESSAGE_FROM_SOCKET", e.data);
+        //this.messages.push(e.data);
         console.log(e.data);
         // do other stuff here
       };
