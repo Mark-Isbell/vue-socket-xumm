@@ -10,7 +10,7 @@ export default new Vuex.Store({
   mutations: {
     ADD_NEW_MESSAGE_FROM_SOCKET(state, newMessageReceived) {
       state.messages.push(newMessageReceived);
-    },
+    }
   },
   getters: {
     MESSAGES: state => {
@@ -18,15 +18,15 @@ export default new Vuex.Store({
     },
     LATEST_MESSAGE: state => {
       return state.messages[state.messages.length - 1];
-    },
+    }
   },
   actions: {
     stopListening() {
       this.connection.close();
     },
 
-    startListening() {
-      this.url = "wss://xumm.app/sign/a55feea8-41c2-4974-ba9f-6772eb804025";
+    startListening(context, uuid) {
+      this.url = "wss://xumm.app/sign/" + uuid;
       this.connection = new WebSocket(this.url);
 
       this.connection.onopen = () => {

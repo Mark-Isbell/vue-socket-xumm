@@ -1,11 +1,22 @@
 <template>
   <div>
     <div>
-      <p>(Vuex store configuration) Xumm Payment UUID Socket Listener</p>
+      <p>Vuex store demonstration for Xumm Payment UUID Socket Listener</p>
     </div>
+
     <div>
       <p>
-        For more information:
+        If you have your own UUID to track, replace this one, or press "Start
+        Vuex store listening" to start the demonstration with the example UUID.
+      </p>
+      <p>
+        <input type="text" name="uuid" v-model="uuid" style="width: 300px;" />
+      </p>
+    </div>
+
+    <div>
+      <p>
+        More about Xumm Payment UUID:
         <a href="https://xumm.readme.io/docs/payload-status"
           >Xumm WebSocket Documentation</a
         >
@@ -19,10 +30,11 @@
     </div>
     <br />
     <div>
-      <button v-on:click="stopStoreListening">Stop Vuex store listening</button>
+      <button v-on:click="otherPage">
+        Other Page in One-Page App
+      </button>
     </div>
     <br />
-
     <div v-for="message in localComponentMessages" :key="message">
       {{ message }}
     </div>
@@ -38,7 +50,8 @@ export default {
 
   data() {
     return {
-      localComponentMessages: []
+      localComponentMessages: [],
+      uuid: "a55feea8-41c2-4974-ba9f-6772eb804025"
     };
   },
 
@@ -55,14 +68,16 @@ export default {
   },
 
   methods: {
-    ...mapActions(["startListening", "stopListening"]),
+    ...mapActions(["startListening"]),
 
-    startStoreListening() {
-      this.startListening();
+    otherPage() {
+      this.$router.push({
+        name: "OtherPage"
+      });
     },
 
-    stopStoreListening() {
-      this.stopListening();
+    startStoreListening() {
+      this.startListening(this.uuid);
     }
   }
 };
